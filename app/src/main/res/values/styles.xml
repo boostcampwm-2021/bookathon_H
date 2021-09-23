@@ -13,4 +13,16 @@
         <item name="android:textSize">@dimen/fragment_title_textSize</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="SettingsOptionTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginTop">@dimen/settings_optionTitle_marginTop</item>
+        <item name="android:layout_marginLeft">@dimen/settings_optionTitle_marginLeft</item>
+        <item name="android:textSize">@dimen/settings_optionTitle_textSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WorkTimeNumberPicker">
+        <item name="android:height">@dimen/settings_numberPicker_height</item>
+        <item name="android:textSize">@dimen/settings_workTime_textSize</item>
+    </style>
 </resources>
