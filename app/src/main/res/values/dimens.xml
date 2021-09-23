@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="splitBar_size">1dp</dimen>
+
+    <dimen name="fragment_title_paddingVertical">20dp</dimen>
+    <dimen name="fragment_title_textSize">25sp</dimen>
+</resources>

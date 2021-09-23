@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="FragmentTitleTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:paddingTop">@dimen/fragment_title_paddingVertical</item>
+        <item name="android:paddingBottom">@dimen/fragment_title_paddingVertical</item>
+        <item name="android:textSize">@dimen/fragment_title_textSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
