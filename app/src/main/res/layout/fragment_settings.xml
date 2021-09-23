@@ -5,8 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/titleTextView"
         style="@style/FragmentTitleTextView"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/settings"
@@ -15,8 +15,61 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <View
+        android:id="@+id/titleSplitBarView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/splitBar_size"
         android:background="@color/splitBar_background"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+    <TextView
+        style="@style/SettingsOptionTitle"
+        android:id="@+id/workTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/work_time"
+        app:layout_constraintTop_toBottomOf="@id/titleSplitBarView"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <NumberPicker
+        style="@style/WorkTimeNumberPicker"
+        android:id="@+id/workTimeHourNumberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/settings_numberPicker_height"
+        app:layout_constraintTop_toTopOf="@id/workTimeTextView"
+        app:layout_constraintBottom_toBottomOf="@id/workTimeTextView"
+        app:layout_constraintLeft_toRightOf="@id/workTimeTextView"
+        app:layout_constraintRight_toLeftOf="@id/workTimeHourTextView"/>
+
+    <TextView
+        android:id="@+id/workTimeHourTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hours"
+        android:textSize="@dimen/settings_workTime_textSize"
+        app:layout_constraintTop_toTopOf="@id/workTimeTextView"
+        app:layout_constraintBottom_toBottomOf="@id/workTimeTextView"
+        app:layout_constraintLeft_toRightOf="@id/workTimeHourNumberPicker"
+        app:layout_constraintRight_toLeftOf="@id/workTimeMinuteNumberPicker" />
+
+    <NumberPicker
+        style="@style/WorkTimeNumberPicker"
+        android:id="@+id/workTimeMinuteNumberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/settings_numberPicker_height"
+        app:layout_constraintTop_toTopOf="@id/workTimeTextView"
+        app:layout_constraintBottom_toBottomOf="@id/workTimeTextView"
+        app:layout_constraintLeft_toRightOf="@id/workTimeHourTextView"
+        app:layout_constraintRight_toLeftOf="@id/workTimeMinuteTextView" />
+
+    <TextView
+        android:id="@+id/workTimeMinuteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/minutes"
+        android:textSize="@dimen/settings_workTime_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/workTimeTextView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/workTimeMinuteNumberPicker"
+        app:layout_constraintTop_toTopOf="@id/workTimeTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
