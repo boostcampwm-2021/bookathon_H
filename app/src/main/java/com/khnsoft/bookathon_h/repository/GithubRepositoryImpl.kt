@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 import java.util.zip.GZIPInputStream
 
 object GithubRepositoryImpl : GithubRepository {
-    override fun getRepositoryNamesOf(username: String): List<String> {
+    override fun getRepositoryNamesOf(username: String): List<GithubProject> {
         val url = URL("https://api.github.com/users/${username}/repos")
         val conn = url.openConnection() as HttpURLConnection
         conn.setRequestProperty("Accept", "application/vnd.github.v3+json")
@@ -23,6 +23,6 @@ object GithubRepositoryImpl : GithubRepository {
 
         if (response[0] != '[') throw Exception("Invalid response for username \"${username}\".")
 
-        return Json { ignoreUnknownKeys = true }.decodeFromString<List<GithubProject>>(response).map { it.name }
+        return Json { ignoreUnknownKeys = true }.decodeFromString(response)
     }
 }

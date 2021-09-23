@@ -20,4 +20,8 @@
 
     <dimen name="githubDialog_marginHorizontal">20dp</dimen>
     <dimen name="githubDialog_marginVertical">15dp</dimen>
+
+    <dimen name="githubProject_textSize">20sp</dimen>
+    <dimen name="githubProject_paddingVertical">10dp</dimen>
+    <dimen name="githubProject_marginLeft">10dp</dimen>
 </resources>
