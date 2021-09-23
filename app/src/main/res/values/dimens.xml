@@ -4,4 +4,11 @@
 
     <dimen name="fragment_title_paddingVertical">20dp</dimen>
     <dimen name="fragment_title_textSize">25sp</dimen>
+
+    <dimen name="settings_optionTitle_marginTop">40dp</dimen>
+    <dimen name="settings_optionTitle_marginLeft">30dp</dimen>
+    <dimen name="settings_optionTitle_textSize">20sp</dimen>
+
+    <dimen name="settings_numberPicker_height">100dp</dimen>
+    <dimen name="settings_workTime_textSize">16sp</dimen>
 </resources>

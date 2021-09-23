@@ -2,4 +2,7 @@
     <string name="app_name">bookathon_H</string>
 
     <string name="settings">설정</string>
+    <string name="work_time">작업 시간</string>
+    <string name="hours">시간</string>
+    <string name="minutes">분</string>
 </resources>
