@@ -5,4 +5,6 @@
     <string name="work_time">작업 시간</string>
     <string name="hours">시간</string>
     <string name="minutes">분</string>
+    <string name="project">프로젝트</string>
+    <string name="get_from_github">Github에서 가져오기</string>
 </resources>
