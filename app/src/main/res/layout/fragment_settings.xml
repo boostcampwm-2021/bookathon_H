@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/work_time"
+        android:layout_marginTop="@dimen/settings_workTimeTitle_marginTop"
         app:layout_constraintTop_toBottomOf="@id/titleSplitBarView"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -72,4 +73,33 @@
         app:layout_constraintLeft_toRightOf="@id/workTimeMinuteNumberPicker"
         app:layout_constraintTop_toTopOf="@id/workTimeTextView" />
 
+    <TextView
+        style="@style/SettingsOptionTitle"
+        android:id="@+id/projectTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project"
+        android:layout_marginTop="@dimen/settings_projectTitle_marginTop"
+        app:layout_constraintTop_toBottomOf="@id/workTimeTextView"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/githubBtnTextView"
+        android:background="@drawable/btn_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_from_github"
+        android:padding="@dimen/settings_githubBtn_padding"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@id/projectTextView"
+        app:layout_constraintBottom_toBottomOf="@id/projectTextView"
+        app:layout_constraintRight_toRightOf="@id/workTimeMinuteTextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/projectRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/githubBtnTextView"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
