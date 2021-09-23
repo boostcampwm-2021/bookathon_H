@@ -17,4 +17,7 @@
     <dimen name="settings_githubBtn_padding">10dp</dimen>
     <dimen name="settings_githubBtn_radius">5dp</dimen>
     <dimen name="settings_githubBtn_border">1dp</dimen>
+
+    <dimen name="githubDialog_marginHorizontal">20dp</dimen>
+    <dimen name="githubDialog_marginVertical">15dp</dimen>
 </resources>

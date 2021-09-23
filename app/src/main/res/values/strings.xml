@@ -7,4 +7,10 @@
     <string name="minutes">분</string>
     <string name="project">프로젝트</string>
     <string name="get_from_github">Github에서 가져오기</string>
+
+    <string name="github_username">Github Username</string>
+    <string name="invalid_username">오류가 발생했습니다. Github 아이디를 확인해주세요.</string>
+    <string name="username">Username</string>
+    <string name="cancel">취소</string>
+    <string name="confirm">확인</string>
 </resources>
