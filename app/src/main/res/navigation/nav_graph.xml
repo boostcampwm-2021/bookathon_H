@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navSettings"
         android:name="com.khnsoft.bookathon_h.settings.SettingsFragment"
-        android:label="과일 카드 게임"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" >
     </fragment>
 </navigation>
