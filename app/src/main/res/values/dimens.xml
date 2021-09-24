@@ -18,10 +18,19 @@
     <dimen name="settings_githubBtn_radius">5dp</dimen>
     <dimen name="settings_githubBtn_border">1dp</dimen>
 
+    <dimen name="settings_listIcon_size">20dp</dimen>
+    <dimen name="settings_list_textSize">20sp</dimen>
+    <dimen name="settings_list_paddingVertical">10dp</dimen>
+    <dimen name="settings_listText_marginLeft">5dp</dimen>
+    <dimen name="settings_project_marginTop">10dp</dimen>
+    <dimen name="settings_project_paddingLeft">40dp</dimen>
+    <dimen name="settings_task_paddingLeft">60dp</dimen>
+
     <dimen name="githubDialog_marginHorizontal">20dp</dimen>
     <dimen name="githubDialog_marginVertical">15dp</dimen>
 
     <dimen name="githubProject_textSize">20sp</dimen>
     <dimen name="githubProject_paddingVertical">10dp</dimen>
     <dimen name="githubProject_marginLeft">10dp</dimen>
+
 </resources>
