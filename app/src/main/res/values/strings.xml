@@ -13,4 +13,23 @@
     <string name="username">Username</string>
     <string name="cancel">취소</string>
     <string name="confirm">확인</string>
+
+    <string name="project_name">프로젝트 이름</string>
+    <string name="add_project">새 프로젝트 추가</string>
+    <string name="rename_project">프로젝트 이름 변경</string>
+
+    <string name="task_name">태스크 이름</string>
+    <string name="add_task">태스크 추가</string>
+    <string name="rename_task">태스크 이름 변경</string>
+
+    <string-array name="projectOption">
+        <item>이름 변경</item>
+        <item>태스크 추가</item>
+        <item>제거</item>
+    </string-array>
+
+    <string-array name="taskOption">
+        <item>이름 변경</item>
+        <item>제거</item>
+    </string-array>
 </resources>

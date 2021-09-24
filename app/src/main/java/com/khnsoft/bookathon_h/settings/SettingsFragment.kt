@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khnsoft.bookathon_h.R
 import com.khnsoft.bookathon_h.adapter.GithubProjectAdapter
+import com.khnsoft.bookathon_h.adapter.SettingsItem
+import com.khnsoft.bookathon_h.adapter.SettingsItemAdapter
 import com.khnsoft.bookathon_h.databinding.FragmentSettingsBinding
 import com.khnsoft.bookathon_h.repository.GithubRepository
 import com.khnsoft.bookathon_h.repository.GithubRepositoryImpl
@@ -27,6 +29,7 @@ class SettingsFragment : Fragment() {
     private val _temporaryMinute = 30
 
     private val githubRepository: GithubRepository = GithubRepositoryImpl
+    private val settingsItemAdapter = SettingsItemAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
@@ -48,20 +51,22 @@ class SettingsFragment : Fragment() {
             println(viewModel.manager.projectList)
             AlertDialog.Builder(activity).apply {
                 setTitle(R.string.github_username)
-                val usernameView = LayoutInflater.from(activity)
-                    .inflate(R.layout.dialog_github_username, view as ViewGroup, false)
-                setView(usernameView)
+                val editTextView = LayoutInflater.from(activity)
+                    .inflate(R.layout.dialog_edittext, view as ViewGroup, false)
+                val editText = editTextView.findViewById<EditText>(R.id.editText)
+                editText.setHint(R.string.username)
+                setView(editTextView)
                 setNegativeButton(R.string.cancel) { _, _ -> }
                 setPositiveButton(R.string.confirm) { _, _ ->
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
                             val githubProjectList = githubRepository.getRepositoryNamesOf(
-                                usernameView.findViewById<EditText>(R.id.usernameEditText).text.toString()
+                                editText.text.toString()
                             ).filter { viewModel.manager[it.name] == null }
                             withContext(Dispatchers.Main) {
                                 AlertDialog.Builder(activity).apply {
                                     val projectsView = LayoutInflater.from(activity)
-                                        .inflate(R.layout.dialog_github_project_list, usernameView as ViewGroup, false)
+                                        .inflate(R.layout.dialog_github_project_list, editTextView as ViewGroup, false)
                                     val projectRecyclerView =
                                         projectsView.findViewById<RecyclerView>(R.id.projectRecyclerView)
 
@@ -93,6 +98,92 @@ class SettingsFragment : Fragment() {
                 show()
             }
         }
+
+        val settingsItems = mutableListOf<SettingsItem>()
+        viewModel.manager.projectList.forEach { project ->
+            settingsItems.add(SettingsItem.ProjectItem(project) {
+                AlertDialog.Builder(activity).apply {
+                    setItems(R.array.projectOption) { _, i ->
+                        when (i) {
+                            0 -> AlertDialog.Builder(activity).apply {
+                                setTitle(R.string.rename_project)
+                                val editTextView = LayoutInflater.from(activity)
+                                    .inflate(R.layout.dialog_edittext, view as ViewGroup, false)
+                                val editText = editTextView.findViewById<EditText>(R.id.editText)
+                                editText.setHint(R.string.project_name)
+                                editText.setText(project.name)
+                                setView(editTextView)
+                                setNegativeButton(R.string.cancel) { _, _ -> }
+                                setPositiveButton(R.string.confirm) { _, _ ->
+                                    project.rename(editText.text.toString())
+                                }
+                                show()
+                            }
+                            1 -> AlertDialog.Builder(activity).apply {
+                                setTitle(R.string.add_task)
+                                val editTextView = LayoutInflater.from(activity)
+                                    .inflate(R.layout.dialog_edittext, view as ViewGroup, false)
+                                val editText = editTextView.findViewById<EditText>(R.id.editText)
+                                editText.setHint(R.string.task_name)
+                                setView(editTextView)
+                                setNegativeButton(R.string.cancel) { _, _ -> }
+                                setPositiveButton(R.string.confirm) { _, _ ->
+                                    project.addTask(editText.text.toString())
+                                }
+                                show()
+                            }
+                            2 -> viewModel.manager.removeProject(project)
+                        }
+                    }
+                    show()
+                }
+            })
+            settingsItems.addAll(project.taskList.map { task ->
+                SettingsItem.TaskItem(task) {
+                    AlertDialog.Builder(activity).apply {
+                        setItems(R.array.taskOption) { _, i ->
+                            when (i) {
+                                0 -> AlertDialog.Builder(activity).apply {
+                                    setTitle(R.string.rename_task)
+                                    val editTextView = LayoutInflater.from(activity)
+                                        .inflate(R.layout.dialog_edittext, view as ViewGroup, false)
+                                    val editText = editTextView.findViewById<EditText>(R.id.editText)
+                                    editText.setHint(R.string.task_name)
+                                    editText.setText(task.name)
+                                    setView(editTextView)
+                                    setNegativeButton(R.string.cancel) { _, _ -> }
+                                    setPositiveButton(R.string.confirm) { _, _ ->
+                                        project.renameTask(task, editText.text.toString())
+                                    }
+                                    show()
+                                }
+                                1 -> project.removeTask(task)
+                            }
+                        }
+                        show()
+                    }
+                }
+            })
+        }
+        settingsItems.add(SettingsItem.AddItem {
+            AlertDialog.Builder(activity).apply {
+                setTitle(R.string.add_project)
+                val editTextView = LayoutInflater.from(activity)
+                    .inflate(R.layout.dialog_edittext, view as ViewGroup, false)
+                val editText = editTextView.findViewById<EditText>(R.id.editText)
+                editText.setHint(R.string.project_name)
+                setView(editTextView)
+                setNegativeButton(R.string.cancel) { _, _ -> }
+                setPositiveButton(R.string.confirm) { _, _ ->
+                    viewModel.manager.addProject(editText.text.toString())
+                }
+                show()
+            }
+        })
+        settingsItemAdapter.submitList(settingsItems)
+
+        binding.projectRecyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.projectRecyclerView.adapter = settingsItemAdapter
 
         return binding.root
     }
