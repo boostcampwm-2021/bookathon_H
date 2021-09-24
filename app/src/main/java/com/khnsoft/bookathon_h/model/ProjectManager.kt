@@ -8,8 +8,13 @@ class ProjectManager(
     private val repository: ProjectRepository,
     val projectList: MutableList<Project> = mutableListOf()
 ) {
-    fun save(context: Context) = repository.setProjectList(context, projectList)
-    fun load(context: Context) = repository.getProjectList(context)
+    fun save(context: Context?) {
+        repository.setProjectList(context ?: return, projectList)
+    }
+    fun load(context: Context?) {
+        projectList.clear()
+        projectList.addAll(repository.getProjectList(context ?: return))
+    }
 
     operator fun get(name: String) = projectList.firstOrNull { it.name == name }
 

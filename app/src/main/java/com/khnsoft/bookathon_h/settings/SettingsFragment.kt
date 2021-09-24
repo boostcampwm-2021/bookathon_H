@@ -18,6 +18,7 @@ import com.khnsoft.bookathon_h.adapter.SettingsItemAdapter
 import com.khnsoft.bookathon_h.databinding.FragmentSettingsBinding
 import com.khnsoft.bookathon_h.repository.GithubRepository
 import com.khnsoft.bookathon_h.repository.GithubRepositoryImpl
+import com.khnsoft.bookathon_h.repository.SharedPreferencesProjectRepository
 import com.khnsoft.bookathon_h.viewmodel.ProjectViewModel
 import kotlinx.coroutines.*
 
@@ -35,6 +36,8 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
+        viewModel.manager.load(context)
+
         binding.workTimeHourNumberPicker.apply {
             minValue = 0
             maxValue = 99
@@ -49,7 +52,6 @@ class SettingsFragment : Fragment() {
         }
 
         binding.githubBtnTextView.setOnClickListener {
-            println(viewModel.manager.projectList)
             showEditTextDialog(R.string.github_username, hintId = R.string.username) {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
@@ -72,6 +74,7 @@ class SettingsFragment : Fragment() {
                                     githubProjectList.forEach {
                                         if (it.checked) viewModel.manager.addProject(it.name)
                                     }
+                                    notifyListChange()
                                 }
                                 show()
                             }
@@ -90,49 +93,9 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        val settingsItems = mutableListOf<SettingsItem>()
-        viewModel.manager.projectList.forEach { project ->
-            settingsItems.add(SettingsItem.ProjectItem(project) {
-                AlertDialog.Builder(activity).apply {
-                    setItems(R.array.projectOption) { _, i ->
-                        when (i) {
-                            0 -> showEditTextDialog(R.string.rename_project, project.name, R.string.project_name) {
-                                project.rename(it)
-                            }
-                            1 -> showEditTextDialog(R.string.add_task, hintId = R.string.task_name) {
-                                project.addTask(it)
-                            }
-                            2 -> viewModel.manager.removeProject(project)
-                        }
-                    }
-                    show()
-                }
-            })
-            settingsItems.addAll(project.taskList.map { task ->
-                SettingsItem.TaskItem(task) {
-                    AlertDialog.Builder(activity).apply {
-                        setItems(R.array.taskOption) { _, i ->
-                            when (i) {
-                                0 -> showEditTextDialog(R.string.rename_task, task.name, R.string.task_name) {
-                                    project.renameTask(task, it)
-                                }
-                                1 -> project.removeTask(task)
-                            }
-                        }
-                        show()
-                    }
-                }
-            })
-        }
-        settingsItems.add(SettingsItem.AddItem {
-            showEditTextDialog(R.string.add_project, hintId = R.string.project_name) {
-                viewModel.manager.addProject(it)
-            }
-        })
-        settingsItemAdapter.submitList(settingsItems)
-
         binding.projectRecyclerView.layoutManager = LinearLayoutManager(activity)
         binding.projectRecyclerView.adapter = settingsItemAdapter
+        notifyListChange()
 
         return binding.root
     }
@@ -157,6 +120,60 @@ class SettingsFragment : Fragment() {
             }
             show()
         }
+    }
+
+    private fun notifyListChange() {
+        val settingsItems = mutableListOf<SettingsItem>()
+        viewModel.manager.projectList.forEach { project ->
+            settingsItems.add(SettingsItem.ProjectItem(project) {
+                AlertDialog.Builder(activity).apply {
+                    setItems(R.array.projectOption) { _, i ->
+                        when (i) {
+                            0 -> showEditTextDialog(R.string.rename_project, project.name, R.string.project_name) {
+                                project.rename(it)
+                                notifyListChange()
+                            }
+                            1 -> showEditTextDialog(R.string.add_task, hintId = R.string.task_name) {
+                                project.addTask(it)
+                                notifyListChange()
+                            }
+                            2 -> {
+                                viewModel.manager.removeProject(project)
+                                notifyListChange()
+                            }
+                        }
+                    }
+                    show()
+                }
+            })
+            settingsItems.addAll(project.taskList.map { task ->
+                SettingsItem.TaskItem(task) {
+                    AlertDialog.Builder(activity).apply {
+                        setItems(R.array.taskOption) { _, i ->
+                            when (i) {
+                                0 -> showEditTextDialog(R.string.rename_task, task.name, R.string.task_name) {
+                                    project.renameTask(task, it)
+                                    notifyListChange()
+                                }
+                                1 -> {
+                                    project.removeTask(task)
+                                    notifyListChange()
+                                }
+                            }
+                        }
+                        show()
+                    }
+                }
+            })
+        }
+        settingsItems.add(SettingsItem.AddItem {
+            showEditTextDialog(R.string.add_project, hintId = R.string.project_name) {
+                viewModel.manager.addProject(it)
+                notifyListChange()
+            }
+        })
+        settingsItemAdapter.submitList(settingsItems)
+        viewModel.manager.save(context)
     }
 
     override fun onDestroyView() {
