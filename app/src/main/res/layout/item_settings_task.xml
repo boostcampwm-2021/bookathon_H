@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_settings"
+    android:paddingTop="@dimen/settings_list_paddingVertical"
+    android:paddingBottom="@dimen/settings_list_paddingVertical"
+    android:paddingLeft="@dimen/settings_task_paddingLeft"
+    android:gravity="center|left">
+
+    <ImageView
+        android:layout_width="@dimen/settings_listIcon_size"
+        android:layout_height="@dimen/settings_listIcon_size"
+        android:src="@drawable/icon_task" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/settings_listText_marginLeft"
+        android:textSize="@dimen/settings_list_textSize"
+        tools:text="태스크" />
+</LinearLayout>
