@@ -47,12 +47,18 @@ class SettingsFragment : Fragment() {
             maxValue = 99
             value = _temporaryHour
             wrapSelectorWheel = false
+            setOnScrollListener { view, _ ->
+                viewModel.setHour(view.value)
+            }
         }
         binding.workTimeMinuteNumberPicker.apply {
             minValue = 0
             maxValue = 59
             value = _temporaryMinute
             wrapSelectorWheel = false
+            setOnScrollListener { view, _ ->
+                viewModel.setMinute(view.value)
+            }
         }
 
         viewModel.projectList.observe(viewLifecycleOwner) { projectList ->
