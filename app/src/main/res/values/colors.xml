@@ -7,4 +7,6 @@
     <color name="splitBar_background">#707070</color>
     <color name="settings_githubBtn_border">#707070</color>
     <color name="settings_githubBtn_ripple">#707070</color>
+
+    <color name="button_borderline">#545757</color>
 </resources>
