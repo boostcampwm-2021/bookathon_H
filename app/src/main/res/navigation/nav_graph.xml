@@ -13,6 +13,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navStatistics"
+        android:name="com.khnsoft.bookathon_h.StatisticsFragment"
+        android:label="@string/statistics"
+        tools:layout="@layout/fragment_statistics" >
+    </fragment>
+
+    <fragment
         android:id="@+id/navSettings"
         android:name="com.khnsoft.bookathon_h.settings.SettingsFragment"
         android:label="@string/settings"

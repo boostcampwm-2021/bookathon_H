@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khnsoft.bookathon_h.OnEditTextConfirmListener
 import com.khnsoft.bookathon_h.R
-import com.khnsoft.bookathon_h.adapter.GithubProjectAdapter
-import com.khnsoft.bookathon_h.adapter.SettingsItem
-import com.khnsoft.bookathon_h.adapter.SettingsItemAdapter
+import com.khnsoft.bookathon_h.adapter.settings.GithubProjectAdapter
+import com.khnsoft.bookathon_h.adapter.settings.SettingsItem
+import com.khnsoft.bookathon_h.adapter.settings.SettingsItemAdapter
 import com.khnsoft.bookathon_h.databinding.FragmentSettingsBinding
 import com.khnsoft.bookathon_h.repository.GithubRepository
 import com.khnsoft.bookathon_h.repository.GithubRepositoryImpl

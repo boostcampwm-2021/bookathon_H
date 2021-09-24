@@ -1,19 +1,19 @@
-package com.khnsoft.bookathon_h
+package com.khnsoft.bookathon_h.adapter.statistics
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.khnsoft.bookathon_h.databinding.StatisticsProjectItemBinding
 import com.khnsoft.bookathon_h.databinding.StatisticsTaskItemBinding
-import com.khnsoft.bookathon_h.dto.GithubRepo
 
-class StatisticsAdapter : ListAdapter<GithubRepo, RecyclerView.ViewHolder>(DiffUtil()) {
+class StatisticsAdapter : ListAdapter<GithubRepoItem, RecyclerView.ViewHolder>(DiffUtil()) {
 
     inner class ProjectViewHolder(val binding: StatisticsProjectItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: GithubRepo.Project) {
+        fun bind(item: GithubRepoItem.ProjectItem) {
             var flag = true
             for (task in item.taskList) {
                 flag = flag && task.isChecked
@@ -21,37 +21,48 @@ class StatisticsAdapter : ListAdapter<GithubRepo, RecyclerView.ViewHolder>(DiffU
             item.isChecked = flag
             with(binding) {
                 projectCheckbox.isChecked = item.isChecked
-                projectCheckbox.text = item.name
-                timeTextView.text = item.getProjectTime().toString()
+                projectCheckbox.text = item.project.name
+                timeTextView.text = item.projectTime.toString()
             }
-            binding.projectCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            binding.projectCheckbox.setOnClickListener {
+                val isChecked = !(it as CheckBox).isChecked
                 item.isChecked = isChecked
                 for (task in item.taskList) {
                     task.isChecked = isChecked
                 }
                 notifyDataSetChanged()
             }
+//            binding.projectCheckbox.setOnCheckedChangeListener { _, isChecked ->
+//                item.isChecked = isChecked
+//                for (task in item.taskList) {
+//                    task.isChecked = isChecked
+//                }
+//                notifyDataSetChanged()
+//            }
         }
     }
 
     inner class TaskViewHolder(val binding: StatisticsTaskItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: GithubRepo.Task) {
+        fun bind(item: GithubRepoItem.TaskItem) {
             with(binding) {
                 taskCheckbox.isChecked = item.isChecked
-                taskCheckbox.text = item.name
-                timeTextView.text = item.time.toString()
+                taskCheckbox.text = item.task.name
+                timeTextView.text = item.task.time.toString()
             }
-            binding.taskCheckbox.setOnCheckedChangeListener { _, isChecked ->
-                item.isChecked = isChecked
+            binding.taskCheckbox.setOnClickListener {
+                item.isChecked = !(it as CheckBox).isChecked
             }
+//            binding.taskCheckbox.setOnCheckedChangeListener { _, isChecked ->
+//                item.isChecked = isChecked
+//            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is GithubRepo.Project -> 0
-            is GithubRepo.Task -> 1
+            is GithubRepoItem.ProjectItem -> 0
+            is GithubRepoItem.TaskItem -> 1
         }
     }
 
@@ -77,28 +88,28 @@ class StatisticsAdapter : ListAdapter<GithubRepo, RecyclerView.ViewHolder>(DiffU
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (item) {
-            is GithubRepo.Project -> {
+            is GithubRepoItem.ProjectItem -> {
                 (holder as ProjectViewHolder).bind(item)
             }
-            is GithubRepo.Task -> {
+            is GithubRepoItem.TaskItem -> {
                 (holder as TaskViewHolder).bind(item)
             }
         }
     }
 }
 
-class DiffUtil : DiffUtil.ItemCallback<GithubRepo>() {
-    override fun areItemsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {
+class DiffUtil : DiffUtil.ItemCallback<GithubRepoItem>() {
+    override fun areItemsTheSame(oldItem: GithubRepoItem, newItem: GithubRepoItem): Boolean {
         return when (oldItem) {
-            is GithubRepo.Project -> oldItem.name == (newItem as GithubRepo.Project).name
-            is GithubRepo.Task -> oldItem.name == (newItem as GithubRepo.Task).name
+            is GithubRepoItem.ProjectItem -> oldItem == (newItem as GithubRepoItem.ProjectItem)
+            is GithubRepoItem.TaskItem -> oldItem == (newItem as GithubRepoItem.TaskItem)
         }
     }
 
-    override fun areContentsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {
+    override fun areContentsTheSame(oldItem: GithubRepoItem, newItem: GithubRepoItem): Boolean {
         return when (oldItem) {
-            is GithubRepo.Project -> oldItem == (newItem as GithubRepo.Project)
-            is GithubRepo.Task -> oldItem == (newItem as GithubRepo.Task)
+            is GithubRepoItem.ProjectItem -> oldItem.project.name == (newItem as GithubRepoItem.ProjectItem).project.name
+            is GithubRepoItem.TaskItem -> oldItem.task.name == (newItem as GithubRepoItem.TaskItem).task.name
         }
     }
 }

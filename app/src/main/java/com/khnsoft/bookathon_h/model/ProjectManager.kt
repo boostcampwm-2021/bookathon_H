@@ -4,13 +4,15 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.khnsoft.bookathon_h.dto.GithubRepo
+import com.khnsoft.bookathon_h.adapter.statistics.GithubRepoItem
+import com.khnsoft.bookathon_h.dto.Project
+import com.khnsoft.bookathon_h.dto.Task
 import com.khnsoft.bookathon_h.dto.Time
 import com.khnsoft.bookathon_h.repository.ProjectRepository
 
 class ProjectManager(
     private val repository: ProjectRepository,
-    val projectList: MutableList<GithubRepo.Project> = mutableListOf()
+    val projectList: MutableList<Project> = mutableListOf()
 ) {
     fun save(context: Context?) {
         repository.setProjectList(context ?: return, projectList)
@@ -19,55 +21,54 @@ class ProjectManager(
         projectList.clear()
         projectList.addAll(repository.getProjectList(context ?: return))
     }
-    private val mutableFlattenProjectList = mutableListOf<GithubRepo>()
-    private val _flattenProjectList: MutableLiveData<List<GithubRepo>> by lazy {
-        MutableLiveData<List<GithubRepo>>()
+    private val mutableFlattenProjectList = mutableListOf<GithubRepoItem>()
+    private val _flattenProjectList: MutableLiveData<List<GithubRepoItem>> by lazy {
+        MutableLiveData<List<GithubRepoItem>>()
     }
-    val flattenProjectList: LiveData<List<GithubRepo>>
+    val flattenProjectList: LiveData<List<GithubRepoItem>>
         get() = _flattenProjectList
-
-    fun save(context: Context) = repository.setProjectList(context, projectList)
-    fun load(context: Context) = repository.getProjectList(context)
 
     operator fun get(name: String) = projectList.firstOrNull { it.name == name }
 
     fun addProject(name: String) {
         if (projectList.firstOrNull { it.name == name } == null) {
-            projectList.add(GithubRepo.Project(name))
+            projectList.add(Project(name))
             setFlattenProjectList()
         }
     }
 
-    fun removeProject(project: GithubRepo.Project) {
+    fun removeProject(project: Project) {
         projectList.remove(project)
         setFlattenProjectList()
     }
 
     fun addTask(projectName: String, name: String) {
         val project = projectList.firstOrNull { it.name == projectName } ?: return
-        project.taskList.add(GithubRepo.Task(name))
+        project.taskList.add(Task(name))
         setFlattenProjectList()
     }
 
     fun setFlattenProjectList() {
         mutableFlattenProjectList.clear()
         for (project in projectList) {
-            mutableFlattenProjectList.add(project)
-            Log.d("manager : project", "${project.isChecked}")
-            for (task in project.taskList) {
-                mutableFlattenProjectList.add(task)
-                Log.d("manager : task", "${task.isChecked}")
+            val projectItem = GithubRepoItem.ProjectItem(project)
+            mutableFlattenProjectList.add(projectItem)
+            Log.d("manager : project", "${projectItem.isChecked}")
+            for (task in projectItem.project.taskList) {
+                val taskItem = GithubRepoItem.TaskItem(task)
+                projectItem.taskList.add(taskItem)
+                mutableFlattenProjectList.add(taskItem)
+                Log.d("manager : task", "${taskItem.isChecked}")
             }
         }
         _flattenProjectList.value = mutableFlattenProjectList
-
     }
 
     fun getTotalProjectTime(): Time {
         var totalProjectTime = Time()
-        projectList.forEach {
-            if (it.isChecked) {
-                totalProjectTime += it.getProjectTime()
+        mutableFlattenProjectList.forEach {
+            if (it is GithubRepoItem.ProjectItem && it.isChecked) {
+                totalProjectTime += it.projectTime
             }
         }
         return totalProjectTime
@@ -75,8 +76,8 @@ class ProjectManager(
 
     fun getAverageProjectTime(): Time {
         var count = 0
-        projectList.forEach {
-            if (it.isChecked) {
+        mutableFlattenProjectList.forEach {
+            if (it is GithubRepoItem.ProjectItem && it.isChecked) {
                 count++
             }
         }
@@ -86,11 +87,9 @@ class ProjectManager(
 
     fun getTotalTaskTime(): Time {
         var totalTaskTime = Time()
-        for (project in projectList) {
-            for (task in project.taskList) {
-                if (task.isChecked) {
-                    totalTaskTime += task.time
-                }
+        mutableFlattenProjectList.forEach {
+            if (it is GithubRepoItem.TaskItem && it.isChecked) {
+                totalTaskTime += it.task.time
             }
         }
         return totalTaskTime
@@ -98,11 +97,9 @@ class ProjectManager(
 
     fun getAverageTaskTime(): Time {
         var count = 0
-        for (project in projectList) {
-            for (task in project.taskList) {
-                if (task.isChecked) {
-                    count++
-                }
+        mutableFlattenProjectList.forEach {
+            if (it is GithubRepoItem.TaskItem && it.isChecked) {
+                count++
             }
         }
         return if (count == 0) Time()

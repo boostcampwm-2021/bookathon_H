@@ -1,7 +1,7 @@
 package com.khnsoft.bookathon_h.repository
 
 import android.content.Context
-import com.khnsoft.bookathon_h.dto.GithubRepo
+import com.khnsoft.bookathon_h.dto.Project
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
@@ -12,7 +12,7 @@ object SharedPreferencesProjectRepository: ProjectRepository {
     private fun getPreferences(context: Context) =
         context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    override fun setProjectList(context: Context, projectList: List<GithubRepo.Project>) {
+    override fun setProjectList(context: Context, projectList: List<Project>) {
         val encoded = Json.encodeToString(projectList)
         val prefs = getPreferences(context)
         val editor = prefs.edit()
@@ -20,7 +20,7 @@ object SharedPreferencesProjectRepository: ProjectRepository {
         editor.apply()
     }
 
-    override fun getProjectList(context: Context): List<GithubRepo.Project> {
+    override fun getProjectList(context: Context): List<Project> {
         val prefs = getPreferences(context)
         val encoded = prefs.getString("projects", null) ?: return listOf()
         return Json.decodeFromString(encoded)

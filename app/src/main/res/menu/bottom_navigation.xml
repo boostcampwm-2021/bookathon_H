@@ -7,6 +7,12 @@
         android:title="@string/timer"/>
 
     <item
+        android:id="@+id/navStatistics"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
+        android:title="@string/statistics"/>
+
+    <item
         android:id="@+id/navSettings"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_settings_24"
