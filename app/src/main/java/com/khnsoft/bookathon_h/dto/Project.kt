@@ -13,11 +13,11 @@ class Project(private var _name: String, val taskList: MutableList<Task> = mutab
     }
 
     fun setTimeOf(task: Task, time: Time) {
-        replaceTask(task, task.copy(time = time))
+        task.setTime(time)
     }
 
     fun renameTask(task: Task, name: String) {
-        replaceTask(task, task.copy(name = name))
+        task.rename(name)
     }
 
     fun removeTask(task: Task) {
@@ -26,12 +26,6 @@ class Project(private var _name: String, val taskList: MutableList<Task> = mutab
 
     fun rename(name: String) {
         _name = name
-    }
-
-    private fun replaceTask(old: Task, new: Task) {
-        val idx = taskList.indexOf(old)
-        taskList.removeAt(idx)
-        taskList.add(idx, new)
     }
 
     override fun toString(): String = "Project(name=${name}, taskList=${taskList})"
