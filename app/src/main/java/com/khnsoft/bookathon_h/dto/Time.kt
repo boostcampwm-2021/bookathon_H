@@ -13,4 +13,6 @@ data class Time(val hours: Int = 0, val minutes: Int = 0, val seconds: Int = 0) 
         fromSeconds((hours + other.hours) * 3600 + (minutes + other.minutes) * 60 + (seconds + other.seconds))
 
     operator fun div(n: Int) = fromSeconds(((hours * 3600 + minutes * 60 + seconds) / n))
+
+    override fun toString(): String = "$hours : $minutes : $seconds"
 }
