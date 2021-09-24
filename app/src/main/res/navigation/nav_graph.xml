@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navSettings">
+    app:startDestination="@id/navTimer">
+
+    <fragment
+        android:id="@+id/navTimer"
+        android:name="com.khnsoft.bookathon_h.StopWatchFragment"
+        android:label="@string/timer"
+        tools:layout="@layout/timer_fragment" >
+    </fragment>
 
     <fragment
         android:id="@+id/navSettings"
