@@ -18,7 +18,7 @@ import com.khnsoft.bookathon_h.view.PauseOrResumeButton
 import com.khnsoft.bookathon_h.view.StartOrResetButton
 
 class ProjectViewModel(private val context: Context?): ViewModel() {
-    private val manager = ProjectManager(SharedPreferencesProjectRepository)
+    val manager = ProjectManager(SharedPreferencesProjectRepository)
     private val _projectList: MutableLiveData<List<Project>>
     val projectList: LiveData<List<Project>> get() = _projectList
     private val _defaultTime = MutableLiveData(Time(0, 30))

@@ -1,4 +1,4 @@
-package com.khnsoft.bookathon_h.adapter
+package com.khnsoft.bookathon_h.adapter.settings
 
 import androidx.recyclerview.widget.DiffUtil
 
