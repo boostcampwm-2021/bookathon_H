@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class Project(private var _name: String, val taskList: MutableList<Task> = mutableListOf(Task("default"))) {
-    val name = _name
+    val name get() = _name
 
     operator fun get(name: String) = taskList.firstOrNull { it.name == name }
 
