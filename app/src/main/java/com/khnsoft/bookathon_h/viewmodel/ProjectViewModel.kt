@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.khnsoft.bookathon_h.dto.Project
 import com.khnsoft.bookathon_h.dto.Task
+import com.khnsoft.bookathon_h.dto.Time
 import com.khnsoft.bookathon_h.model.ProjectManager
 import com.khnsoft.bookathon_h.repository.SharedPreferencesProjectRepository
 
@@ -13,6 +14,8 @@ class ProjectViewModel(private val context: Context?): ViewModel() {
     private val manager = ProjectManager(SharedPreferencesProjectRepository)
     private val _projectList: MutableLiveData<List<Project>>
     val projectList: LiveData<List<Project>> get() = _projectList
+    private val _defaultTime = MutableLiveData(Time(0, 30))
+    val defaultTime: LiveData<Time> get() = _defaultTime
 
     init {
         manager.load(context)
@@ -47,6 +50,14 @@ class ProjectViewModel(private val context: Context?): ViewModel() {
     fun removeTask(project: Project, task: Task) {
         project.removeTask(task)
         notifyChange()
+    }
+
+    fun setHour(hour: Int) {
+        _defaultTime.value = _defaultTime.value?.copy(hours = hour)
+    }
+
+    fun setMinute(minute: Int) {
+        _defaultTime.value = _defaultTime.value?.copy(minutes = minute)
     }
 
     fun containsProject(name: String): Boolean = manager[name] != null
